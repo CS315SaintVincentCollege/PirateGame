@@ -1,0 +1,22 @@
+{
+  "name": "pirategame",
+  "version": "1.0.0",
+  "description": "CS315 TeamB2021 Node.js pirate game",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CS315SaintVincentCollege/PirateGame.git"
+  },
+  "keywords": [
+    "pirate"
+  ],
+  "author": "Nate Fabian, Joe Choby",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CS315SaintVincentCollege/PirateGame/issues"
+  },
+  "homepage": "https://github.com/CS315SaintVincentCollege/PirateGame#readme"
+}

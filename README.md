@@ -1,7 +1,7 @@
 # PirateGame
 CS315 TeamB2021 Node.js pirate game
 
-
+```
 //Function Psuedocode and ideas.
 
 //Takes an array of numbers from 1 to x and puts them in each div.
@@ -53,4 +53,4 @@ lightUse(){
 figure out which way player is facing
 walk that direction and show squares until obstacle or board edge is hit
 }
-
+```

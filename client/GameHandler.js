@@ -22,10 +22,17 @@ function openWSClient() {
     //#endregion
 }
 
+function getMove(element){
+    console.log('Cell clicked');
+    let clickedDiv = element.innerHTML;
+    console.log(element);
+    console.log(clickedDiv);
+}
+
 function SendMove() {
 
 }
 
 function GetBoardData() {
-
+    
 }

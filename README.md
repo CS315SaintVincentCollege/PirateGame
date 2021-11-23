@@ -2,6 +2,7 @@
 CS315 TeamB2021 Node.js pirate game
 
 ```
+--Make all board changes game.ts in server folder
 //Function Psuedocode and ideas.
 
 //Not sure if we need this one.

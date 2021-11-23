@@ -1,3 +1,4 @@
+"use strict";
 var Board = /** @class */ (function () {
     function Board() {
         this.boardSize = 10;

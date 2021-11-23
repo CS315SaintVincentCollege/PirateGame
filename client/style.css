@@ -24,4 +24,37 @@ body {
 .Position {
     border: 2px blue solid;
     background-color: rgb(0, 0, 146);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.BoardItem {
+    color: white;
+    margin: auto;
+    font-size: 2em;
+    background-repeat: no-repeat;
+    background-size: cover;
+    aspect-ratio: 1/1;
+    width: 100%;
+}
+
+.SpriteE {
+}
+
+.SpriteT {
+    
+    background-image: url("./TreasureChest.png");
+}
+
+.Sprite1 {
+    background-image: url("./Player1.png");
+}
+
+.Sprite2 {
+    background-image: url("./Player2.png");
+}
+
+.SpriteR {
+    background-image: url("./Obstacle.png");
 }

@@ -5,6 +5,7 @@ import { WebSocketServer } from 'ws';
 import { createServer, IncomingMessage, ServerResponse } from 'http';
 const path =  require('path');
 
+import {Board} from './game';
 
 let WebSocketPort = 3002;
 let WebServerPort = 3001;
@@ -14,11 +15,14 @@ let WebServerPort = 3001;
 const wss = new WebSocketServer({ port: WebSocketPort });
 
 wss.on('connection', function connection(ws) {
+  let game = new Board();
+
   ws.on('message', function message(data) {
     console.log('received: %s', data);
   });
   
   ws.send(JSON.stringify({type:"Debug", Data: "We Read you Loud and clear"}));
+  ws.send(JSON.stringify({type: "BoardState", Data: game.SerializeBoard()}));
 });
 //#endregion
 

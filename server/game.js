@@ -8,6 +8,7 @@ var BoardStateValues;
     BoardStateValues["player1"] = "1";
     BoardStateValues["player2"] = "2";
     BoardStateValues["rock"] = "R";
+    BoardStateValues["unknown"] = "U";
 })(BoardStateValues || (BoardStateValues = {}));
 var Board = /** @class */ (function () {
     function Board() {

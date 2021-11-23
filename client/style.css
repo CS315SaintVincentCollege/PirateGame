@@ -33,12 +33,28 @@ body {
     color: white;
     margin: auto;
     font-size: 2em;
+    background-repeat: no-repeat;
+    background-size: cover;
+    aspect-ratio: 1/1;
+    width: 100%;
 }
 
-.E {
-    background-color: rgba(169, 169, 169, 0.432);
+.SpriteE {
 }
 
-.T {
-    background-color: red;
+.SpriteT {
+    
+    background-image: url("./TreasureChest.png");
+}
+
+.Sprite1 {
+    background-image: url("./Player1.png");
+}
+
+.Sprite2 {
+    background-image: url("./Player2.png");
+}
+
+.SpriteR {
+    background-image: url("./Obstacle.png");
 }

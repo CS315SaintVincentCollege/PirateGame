@@ -50,6 +50,6 @@ function populateDivs(output){
     let divArray = document.getElementsByClassName("Position");
     for(let i = 0; i < divArray.length; i++){
         //document.getElementsByClassName("Board")[i] = array[i];
-        document.getElementsByClassName("Position")[i].innerHTML = `<span id="${i}" class="BoardItem ${output[i]}">${output[i]}</span>`;
+        document.getElementsByClassName("Position")[i].innerHTML = `<span id="${i}" class="BoardItem Sprite${output[i]}"></span>`;
     }
 }

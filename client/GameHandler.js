@@ -1,5 +1,7 @@
 let WebSocketSession;
 
+window.onload = openWSClient();
+
 function populateDivs(output){
     let divArray = document.getElementsByClassName("Position");
     for(let i = 0; i < divArray.length; i++){

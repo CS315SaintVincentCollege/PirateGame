@@ -1,10 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+//#region Globals and imports
 var fs = require('fs'), http = require('http');
 var ws_1 = require("ws");
 var path = require('path');
 var WebSocketPort = 3002;
 var WebServerPort = 3001;
+//#endregion
 //#region Web Socket Setttings
 var wss = new ws_1.WebSocketServer({ port: WebSocketPort });
 wss.on('connection', function connection(ws) {

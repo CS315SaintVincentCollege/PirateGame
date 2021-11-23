@@ -3,7 +3,7 @@ type Position = {
     y: number
 }
 
-class Board {
+export class Board {
     state: Array<Array<string>>;
     boardSize = 10;
 
@@ -15,7 +15,7 @@ class Board {
 
         for (let i = 0; i < this.boardSize; i++) {
             for (let j = 0; j < this.boardSize; j++) {
-                this.state[i][j] = "H";
+                this.state[i][j] = "E";
             }
         }
     }
@@ -31,8 +31,8 @@ class Board {
             console.log(output);
         });
     }
+
+    SerializeBoard() {
+        return this.state;
+    }
 }
-
-let board = new Board();
-
-board.printBoard();

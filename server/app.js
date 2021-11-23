@@ -4,16 +4,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var fs = require('fs'), http = require('http');
 var ws_1 = require("ws");
 var path = require('path');
+var game_1 = require("./game");
 var WebSocketPort = 3002;
 var WebServerPort = 3001;
 //#endregion
 //#region Web Socket Setttings
 var wss = new ws_1.WebSocketServer({ port: WebSocketPort });
 wss.on('connection', function connection(ws) {
+    var game = new game_1.Board();
     ws.on('message', function message(data) {
         console.log('received: %s', data);
     });
     ws.send(JSON.stringify({ type: "Debug", Data: "We Read you Loud and clear" }));
+    ws.send(JSON.stringify({ type: "BoardState", Data: game.SerializeBoard() }));
 });
 //#endregion
 //#region Express Server Settup

@@ -1,4 +1,6 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Board = void 0;
 var Board = /** @class */ (function () {
     function Board() {
         this.boardSize = 10;
@@ -8,7 +10,7 @@ var Board = /** @class */ (function () {
         }
         for (var i = 0; i < this.boardSize; i++) {
             for (var j = 0; j < this.boardSize; j++) {
-                this.state[i][j] = "H";
+                this.state[i][j] = "E";
             }
         }
     }
@@ -21,7 +23,9 @@ var Board = /** @class */ (function () {
             console.log(output);
         });
     };
+    Board.prototype.SerializeBoard = function () {
+        return this.state;
+    };
     return Board;
 }());
-var board = new Board();
-board.printBoard();
+exports.Board = Board;

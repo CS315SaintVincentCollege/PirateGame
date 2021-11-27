@@ -26,9 +26,12 @@ function openWSClient() {
 
 function getMove(element){
     console.log('Cell clicked');
-    let clickedDiv = element.innerHTML;
-    console.log(element);
-    console.log(clickedDiv);
+    let clickedDiv = element;
+    console.log("Clicked div is: ", clickedDiv);
+    var clickedSpan = clickedDiv.getElementsByTagName("span");
+    console.log("Span for clicked div is: ", clickedSpan);
+    var spanId = clickedSpan.item(0).id;
+    console.log("Span ID is: ", spanId);
     //calculate
 }
 

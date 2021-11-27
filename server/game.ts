@@ -35,7 +35,7 @@ export class Board {
         this.state[Math.floor(Math.random()*10)][Math.floor(Math.random()*10)] = BoardStateValues.treasure;
 
         this.state[0][this.boardSize - 1] = BoardStateValues.player1;
-        this.state[this.boardSize -1][0] = BoardStateValues.player2;
+        this.state[this.boardSize - 1][0] = BoardStateValues.player2;
     }
 
 
@@ -52,5 +52,9 @@ export class Board {
 
     SerializeBoard() {
         return this.state;
+    }
+
+    checkMove(){
+    
     }
 }

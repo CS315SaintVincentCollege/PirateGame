@@ -50,5 +50,5 @@ http.createServer(function (req: IncomingMessage, res: ServerResponse) {
     });
   }
 }).listen(WebServerPort);
-console.log(`WemServer @ http://localhost:${WebServerPort} and sockets are on port ${WebSocketPort}`);
+console.log(`WebServer @ http://localhost:${WebServerPort} and sockets are on port ${WebSocketPort}`);
 //#endregion

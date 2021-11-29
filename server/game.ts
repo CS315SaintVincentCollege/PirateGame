@@ -54,7 +54,52 @@ export class Board {
         return this.state;
     }
 
-    checkMove(){
-    
+    checkMove(coords: any){
+
+        switch(this.state[coords[0]][coords[1]]) {
+            case BoardStateValues.player1:
+            case BoardStateValues.player2:
+            case BoardStateValues.rock:
+              console.log("Square is occupied");
+              //check squares to move player?
+              //check square to the N
+              if(this.state[coords[0] - 1][coords[1]] == BoardStateValues.empty){
+                  //unfog and move
+              }
+              //Check square to the S
+              else if(this.state[coords[0] + 1][coords[1]] == BoardStateValues.empty)
+              {
+                //unfog and move
+              }
+              //Check square to the W
+              else if(this.state[coords[0]][coords[1] - 1] == BoardStateValues.empty)
+              {
+                //unfog and move
+              }
+              //check square to the E
+              else if(this.state[coords[0]][coords[1] + 1] == BoardStateValues.empty)
+              {
+                //unfog and move
+              }
+              else
+              {
+                //Player cannot make that move
+                console.log("All locations blocked. Move impossible");
+              }
+              break;
+            case BoardStateValues.treasure:
+              console.log("Treasure found");
+              //end game
+              break;
+            case BoardStateValues.unknown:
+                console.log("Something is wrong with this square generation");
+                break;
+            case BoardStateValues.empty:
+                console.log("Square is free");
+                //move player sprite
+            default:
+                console.log("Something is terribly wrong");
+          }
+
     }
 }

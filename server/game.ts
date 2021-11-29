@@ -38,7 +38,6 @@ export class Board {
         this.state[this.boardSize - 1][0] = BoardStateValues.player2;
     }
 
-
     printBoard() {
         this.state.forEach((row) => {
             let output = "";
@@ -55,7 +54,6 @@ export class Board {
     }
 
     checkMove(coords: any){
-
         switch(this.state[coords[0]][coords[1]]) {
             case BoardStateValues.player1:
             case BoardStateValues.player2:
@@ -100,6 +98,43 @@ export class Board {
             default:
                 console.log("Something is terribly wrong");
           }
-
     }
+
+    useLight(playerDirection: any, playerLocation: any){
+        //Starts light one square away from player to avoid collision on current location
+        let x = 1;
+        switch(playerDirection){
+            case "N":
+                while(this.state[playerLocation[0] - x][playerLocation[1]] != BoardStateValues.player1 || BoardStateValues.player2 || BoardStateValues.rock){
+                    //uncover square
+                    x++;
+                }
+                //uncover square
+                break;
+            case "S":
+                while(this.state[playerLocation[0] + x][playerLocation[1]] != BoardStateValues.player1 || BoardStateValues.player2 || BoardStateValues.rock){
+                    //uncover square
+                    x++;
+                }
+                //uncover square
+                break;
+            case "E":
+                while(this.state[playerLocation[0]][playerLocation[1] + x] != BoardStateValues.player1 || BoardStateValues.player2 || BoardStateValues.rock){
+                    //uncover square
+                    x++;
+                }
+                //uncover square
+                break;
+            case "W":
+                while(this.state[playerLocation[0]][playerLocation[1] - x] != BoardStateValues.player1 || BoardStateValues.player2 || BoardStateValues.rock){
+                    //uncover square
+                    x++;
+                }
+                //uncover square
+                break;
+            default:
+                console.log("Something terribly went wrong");
+        }
+    }
+    
 }

@@ -5,7 +5,7 @@ import { WebSocketServer } from 'ws';
 import { createServer, IncomingMessage, ServerResponse } from 'http';
 const path =  require('path');
 
-import {Board} from './game';
+import {Board, MakeMove} from './game';
 
 let WebSocketPort = 3002;
 let WebServerPort = 3001;
@@ -15,14 +15,18 @@ let WebServerPort = 3001;
 const wss = new WebSocketServer({ port: WebSocketPort });
 
 wss.on('connection', function connection(ws) {
-  let game = new Board();
+  let game = new Board(); //master board should not be sent to client
+  let p1Board = game.obscureBoard(1);
+  let p2Board = game.obscureBoard(2);
 
   ws.on('message', function message(data) {
     console.log('received: %s', data);
+    // if data.messagetype = movemessage
+    // MakeMove with board
   });
   
   ws.send(JSON.stringify({type:"Debug", Data: "We Read you Loud and clear"}));
-  ws.send(JSON.stringify({type: "BoardState", Data: game.SerializeBoard()}));
+  ws.send(JSON.stringify({type: "BoardState", Data: p1Board}));
 });
 //#endregion
 

@@ -16,6 +16,9 @@ export class Board {
     state: Array<Array<string>>;
     boardSize = 10;
 
+    player1Pos: Position;
+    player2Pos: Position;
+
     constructor() {
         this.state = new Array(10);
         for (let i = 0; i < this.boardSize; i++) {
@@ -32,17 +35,46 @@ export class Board {
             }
         }
 
-        this.state[Math.floor(Math.random()*10)][Math.floor(Math.random()*10)] = BoardStateValues.treasure;
+        this.state[Math.floor(Math.random() * 10)][Math.floor(Math.random() * 10)] = BoardStateValues.treasure;
 
         this.state[0][this.boardSize - 1] = BoardStateValues.player1;
         this.state[this.boardSize - 1][0] = BoardStateValues.player2;
+
+        this.player1Pos = { x: 0, y: 9 };
+        this.player2Pos = { x: 9, y: 0 };
+    }
+
+    obscureBoard(player: number) {
+        let newBoard = this.state;
+
+        if (player == 1) {
+            for (let i = 0; i < this.boardSize; i++) {
+                for (let j = 0; j < this.boardSize; j++) {
+                    if (newBoard[i][j] != BoardStateValues.player1) {
+                        newBoard[i][j] = BoardStateValues.unknown;
+                    }
+                }
+            }
+
+            return newBoard;
+        } else if (player == 2) {
+            for (let i = 0; i < this.boardSize; i++) {
+                for (let j = 0; j < this.boardSize; j++) {
+                    if (newBoard[i][j] != BoardStateValues.player2) {
+                        newBoard[i][j] = BoardStateValues.unknown;
+                    }
+                }
+            }
+
+            return newBoard;
+        }
     }
 
     printBoard() {
         this.state.forEach((row) => {
             let output = "";
 
-            row.map((item)=>{
+            row.map((item) => {
                 output = output.concat(item);
             });
             console.log(output);
@@ -53,80 +85,79 @@ export class Board {
         return this.state;
     }
 
-    checkMove(coords: any){
-        switch(this.state[coords[0]][coords[1]]) {
+    checkMove(coords: Position, player: number): Position {
+        let returnPosition = undefined;
+        switch (this.state[coords.x][coords.y]) {
             case BoardStateValues.player1:
             case BoardStateValues.player2:
             case BoardStateValues.rock:
-              console.log("Square is occupied");
-              //check squares to move player?
-              //check square to the N
-              if(this.state[coords[0] - 1][coords[1]] == BoardStateValues.empty){
-                  //unfog and move
-              }
-              //Check square to the S
-              else if(this.state[coords[0] + 1][coords[1]] == BoardStateValues.empty)
-              {
-                //unfog and move
-              }
-              //Check square to the W
-              else if(this.state[coords[0]][coords[1] - 1] == BoardStateValues.empty)
-              {
-                //unfog and move
-              }
-              //check square to the E
-              else if(this.state[coords[0]][coords[1] + 1] == BoardStateValues.empty)
-              {
-                //unfog and move
-              }
-              else
-              {
-                //Player cannot make that move
-                console.log("All locations blocked. Move impossible");
-              }
-              break;
+                console.log("Square is occupied");
+                //check squares to move player?
+                //send space ocupied message
+
+                break;
             case BoardStateValues.treasure:
-              console.log("Treasure found");
-              //end game
-              break;
+                console.log("Treasure found");
+                //end game
+                break;
             case BoardStateValues.unknown:
-                console.log("Something is wrong with this square generation");
+                console.log("Move to new square and make known");
                 break;
             case BoardStateValues.empty:
-                console.log("Square is free");
-                //move player sprite
+                console.log("Square is free move to square");
+            //move player sprite
             default:
-                console.log("Something is terribly wrong");
-          }
+                console.log("Something is terribly wrong we have falled out of the switch");
+        }
+
+        //make sure you update the player position
+
+        if (player == 1) {
+            return this.player1Pos;
+        } else if (player == 2) {
+            return this.player2Pos;
+        } else {
+            return { x: -1, y: -1 }; //we should never hit here if we do panic your missing your player
+        }
     }
 
-    useLight(playerDirection: any, playerLocation: any){
+    useLight(playerDirection: string, player: number, playerObscuredBoard: Array<Array<string>>) {
         //Starts light one square away from player to avoid collision on current location
         let x = 1;
-        switch(playerDirection){
+        let playerLocation: Position = {x:-1, y:-1};
+        if (player == 1) {
+            playerLocation = this.player1Pos;
+        } else if (player == 2) {
+            playerLocation = this.player2Pos;
+        }
+        switch (playerDirection) {
             case "N":
-                while(this.state[playerLocation[0] - x][playerLocation[1]] != BoardStateValues.player1 || BoardStateValues.player2 || BoardStateValues.rock){
-                    //uncover square
+                //case for board edge
+                while (this.state[playerLocation.x - x][playerLocation.y] != BoardStateValues.player1 || this.state[playerLocation[0] - x][playerLocation[1]] != BoardStateValues.player2 || this.state[playerLocation[0] - x][playerLocation[1]] != BoardStateValues.rock) {
+                    //mutate the player obscured board based on the information located in this.state
+                    playerObscuredBoard[playerLocation.x - x][playerLocation.y] = this.state[playerLocation.x - x][playerLocation.y]; //this is the "uncovering"
                     x++;
                 }
-                //uncover square
+                //case for rock
+                //case for treasure
+                
                 break;
             case "S":
-                while(this.state[playerLocation[0] + x][playerLocation[1]] != BoardStateValues.player1 || BoardStateValues.player2 || BoardStateValues.rock){
+                while (this.state[playerLocation[0] + x][playerLocation[1]] != BoardStateValues.player1 || BoardStateValues.player2 || BoardStateValues.rock) {
                     //uncover square
                     x++;
                 }
                 //uncover square
                 break;
             case "E":
-                while(this.state[playerLocation[0]][playerLocation[1] + x] != BoardStateValues.player1 || BoardStateValues.player2 || BoardStateValues.rock){
+                while (this.state[playerLocation[0]][playerLocation[1] + x] != BoardStateValues.player1 || BoardStateValues.player2 || BoardStateValues.rock) {
                     //uncover square
                     x++;
                 }
                 //uncover square
                 break;
             case "W":
-                while(this.state[playerLocation[0]][playerLocation[1] - x] != BoardStateValues.player1 || BoardStateValues.player2 || BoardStateValues.rock){
+                while (this.state[playerLocation[0]][playerLocation[1] - x] != BoardStateValues.player1 || BoardStateValues.player2 || BoardStateValues.rock) {
                     //uncover square
                     x++;
                 }
@@ -135,6 +166,26 @@ export class Board {
             default:
                 console.log("Something terribly went wrong");
         }
+
+        return playerObscuredBoard; //return the now updated board;
     }
+}
+
+export function MakeMove(targetPosition: Position, currentBoard: Board, playerObscuredBoard: Array<Array<string>>, player: number) {
+    let newPosition = currentBoard.checkMove(targetPosition, player);
+
+
+    if (player == 1) {
+        playerObscuredBoard[newPosition.x][newPosition.y] = BoardStateValues.player1;
+    } else if (player == 2) {
+        playerObscuredBoard[newPosition.x][newPosition.y] = BoardStateValues.player2;
+    }
+
+    return playerObscuredBoard;
+}
+
+export function playerUseLight(targetDirection: string, currentBoard: Board, playerObscuredBoard: Array<Array<string>>, player: number) {
+    playerObscuredBoard = currentBoard.useLight(targetDirection, player);
     
+    return playerObscuredBoard;
 }

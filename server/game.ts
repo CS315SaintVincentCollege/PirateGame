@@ -91,20 +91,18 @@ export class Board {
             case BoardStateValues.player1:
             case BoardStateValues.player2:
             case BoardStateValues.rock:
-                console.log("Square is occupied");
-                //check squares to move player?
+                console.log("Square is occupied.");
+                //window.alert("Square is occupied. Cannot make move");
                 //send space ocupied message
-
+    
                 break;
             case BoardStateValues.treasure:
                 console.log("Treasure found");
                 //end game
                 break;
-            case BoardStateValues.unknown:
-                console.log("Move to new square and make known");
-                break;
+            //case BoardStateValues.unknown:
             case BoardStateValues.empty:
-                console.log("Square is free move to square");
+                console.log("Square is free. Move to square");
                 //move player sprite
                 if(player == 1){
                     this.state[this.player1Pos.x][this.player1Pos.y] = BoardStateValues.empty;

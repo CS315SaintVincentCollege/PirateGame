@@ -94,7 +94,7 @@ export class Board {
                 console.log("Square is occupied");
                 //check squares to move player?
                 //send space ocupied message
-                
+
                 break;
             case BoardStateValues.treasure:
                 console.log("Treasure found");
@@ -105,12 +105,24 @@ export class Board {
                 break;
             case BoardStateValues.empty:
                 console.log("Square is free move to square");
-            //move player sprite
+                //move player sprite
+                if(player == 1){
+                    this.state[this.player1Pos.x][this.player1Pos.y] = BoardStateValues.empty;
+                    this.player1Pos.x = coords.x;
+                    this.player1Pos.y = coords.y;
+                    this.state[coords.x][coords.y] = BoardStateValues.player1;
+                }
+                else if (player == 2)
+                {
+                    this.state[this.player2Pos.x][this.player2Pos.y] = BoardStateValues.empty;
+                    this.player2Pos.x = coords.x;
+                    this.player2Pos.y = coords.y;
+                    this.state[coords.x][coords.y] = BoardStateValues.player2;
+                }
+                break;
             default:
                 console.log("Something is terribly wrong we have falled out of the switch");
         }
-
-        //make sure you update the player position
 
         if (player == 1) {
             return this.player1Pos;

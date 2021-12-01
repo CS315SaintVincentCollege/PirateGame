@@ -27,18 +27,13 @@ function openWSClient() {
 function getMove(element){
     console.log('Cell clicked');
     let clickedDiv = element;
-    console.log("Clicked div is: ", clickedDiv);
     let clickedSpan = clickedDiv.getElementsByTagName("span");
-    console.log("Span for clicked div is: ", clickedSpan);
     let spanId = clickedSpan.item(0).id;
-    console.log("Span ID is: ", spanId);
-    let spanType = clickedSpan.item(0).className;
-    console.log("Span enum type is: ", spanType);
     //calculate 1D --> 2D
     var row = Math.floor(spanId / 10);
     var col = spanId % 10;
-    console.log("2D array is: ", row, col);
-    let coord = [row, col];
+    console.log("2D array coordinate is: ", row, col);
+    let coord = {x: row, y: col};
     console.log(coord);
     return coord;
 }

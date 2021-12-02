@@ -1,46 +1,57 @@
 let WebSocketSession;
+let playerID;
 
 window.onload = openWSClient();
 
 function openWSClient() {
     //#region Create Connection and initalize
-    WebSocketSession = new WebSocket('ws://localhost:3002')
+    WebSocketSession = new WebSocket('ws://10.94.13.95:3002')
     WebSocketSession.onopen = (event)=>{
-        WebSocketSession.send("Hello World");
+        WebSocketSession.send(JSON.stringify({messageType: "DEBUG", data: "Hello World"}));
     }
     //#endregion
     //#region Message Decider
     WebSocketSession.onmessage = (Message)=>{
         let messageData = JSON.parse(Message.data);
-        if (messageData.type == "Debug") {
-            console.log(messageData.Data);
-        } else if (messageData.type == "BoardState") {
-            SetBoardData(messageData.Data);
-        } else {
-            console.log("unknown message type of ");
-            console.log(Message)
+
+        console.log(messageData.Data);
+
+        switch (messageData.type) {
+            case "Debug": {
+                console.log(messageData.Data);
+                break;
+            }
+            case "PlayerAssignment": {
+                playerID = messageData.Data;
+                console.log(`you are player ${playerID}`);
+                break;
+            }
+            case "BoardState": {
+                SetBoardData(messageData.Data);
+                break;
+            }
+            default: {
+                console.log(`unknown message type of ${messageData.type}`);
+                console.log(Message)
+            }
         }
     }
     //#endregion
 }
 
 function getMove(element){
-    console.log('Cell clicked');
     let clickedDiv = element;
-    console.log("Clicked div is: ", clickedDiv);
     let clickedSpan = clickedDiv.getElementsByTagName("span");
-    console.log("Span for clicked div is: ", clickedSpan);
     let spanId = clickedSpan.item(0).id;
-    console.log("Span ID is: ", spanId);
     let spanType = clickedSpan.item(0).className;
-    console.log("Span enum type is: ", spanType);
     //calculate 1D --> 2D
     var row = Math.floor(spanId / 10);
     var col = spanId % 10;
-    console.log("2D array is: ", row, col);
     let coord = [row, col];
-    console.log(coord);
-    return coord;
+    console.log(`player is ${playerID}`);
+    let messageObject = {messageType: "move", PlayerID: playerID, position: {x: row, y: col}};
+    WebSocketSession.send(JSON.stringify(messageObject)); //REFACTOR ME AFTER MERGE
+    console.log(messageObject);
 }
 
 function SendMove() {

@@ -1,3 +1,5 @@
+console.clear();
+
 //#region Globals and imports
 var fs = require('fs'),
     http = require('http');
@@ -5,7 +7,7 @@ import { WebSocketServer } from 'ws';
 import { createServer, IncomingMessage, ServerResponse } from 'http';
 const path =  require('path');
 
-import {Board} from './game';
+import {Board, MakeMove, playerUseLight} from './game';
 
 let WebSocketPort = 3002;
 let WebServerPort = 3001;
@@ -14,15 +16,47 @@ let WebServerPort = 3001;
 //#region Web Socket Setttings
 const wss = new WebSocketServer({ port: WebSocketPort });
 
+let playerCount = 0;
+
 wss.on('connection', function connection(ws) {
-  let game = new Board();
+  let playerID: Number = -1;
+
+  let game = new Board(); //master board should not be sent to client
+  let p1Board = game.obscureBoard(1);
+  let p2Board = game.obscureBoard(2);
 
   ws.on('message', function message(data) {
-    console.log('received: %s', data);
+    // if data.messagetype = movemessage
+    // MakeMove with board
+    console.log(JSON.parse(data.toString()));
+
+
+    if (playerCount == 0) {
+      // send to just player 1
+    } else if (playerCount == 1) {
+      // send to just player 2
+    } else if (playerCount != 0 && playerCount != 1) {
+      // send to unknown player
+      playerID = -1; 
+    }
   });
-  
-  ws.send(JSON.stringify({type:"Debug", Data: "We Read you Loud and clear"}));
-  ws.send(JSON.stringify({type: "BoardState", Data: game.SerializeBoard()}));
+
+  console.log('player connecting')
+  if (playerCount == 0) {
+    // send to just player 1
+    console.log("player 1 connected");
+    playerID = 1;
+    playerCount++;
+    ws.send(JSON.stringify({type: "BoardState", Data: p1Board}));
+  } else if (playerCount == 1) {
+    // send to just player 2
+    console.log("player 2 connected");
+    playerID = 2;
+    playerCount++;
+    ws.send(JSON.stringify({type: "BoardState", Data: p2Board}));
+  }
+
+  ws.send(JSON.stringify({type: "PlayerAssignment", Data: playerID}))
 });
 //#endregion
 
@@ -50,5 +84,5 @@ http.createServer(function (req: IncomingMessage, res: ServerResponse) {
     });
   }
 }).listen(WebServerPort);
-console.log(`WemServer @ http://localhost:${WebServerPort} and sockets are on port ${WebSocketPort}`);
+console.log(`WebServer @ http://localhost:${WebServerPort} and sockets are on port ${WebSocketPort}`);
 //#endregion

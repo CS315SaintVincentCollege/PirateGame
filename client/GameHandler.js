@@ -1,41 +1,54 @@
 let WebSocketSession;
+let playerID;
 
 window.onload = openWSClient();
 
 function openWSClient() {
     //#region Create Connection and initalize
-    WebSocketSession = new WebSocket('ws://localhost:3002')
+    WebSocketSession = new WebSocket('ws://10.94.13.95:3002')
     WebSocketSession.onopen = (event)=>{
-        WebSocketSession.send("Hello World");
+        WebSocketSession.send(JSON.stringify({messageType: "DEBUG", data: "Hello World"}));
     }
     //#endregion
     //#region Message Decider
     WebSocketSession.onmessage = (Message)=>{
         let messageData = JSON.parse(Message.data);
-        if (messageData.type == "Debug") {
-            console.log(messageData.Data);
-        } else if (messageData.type == "BoardState") {
-            SetBoardData(messageData.Data);
-        } else {
-            console.log("unknown message type of ");
-            console.log(Message)
+
+        console.log(messageData.Data);
+
+        switch (messageData.type) {
+            case "Debug": {
+                console.log(messageData.Data);
+                break;
+            }
+            case "PlayerAssignment": {
+                playerID = messageData.Data;
+                console.log(`you are player ${playerID}`);
+                break;
+            }
+            case "BoardState": {
+                SetBoardData(messageData.Data);
+                break;
+            }
+            default: {
+                console.log(`unknown message type of ${messageData.type}`);
+                console.log(Message)
+            }
         }
     }
     //#endregion
 }
 
 function getMove(element){
-    console.log('Cell clicked');
     let clickedDiv = element;
     let clickedSpan = clickedDiv.getElementsByTagName("span");
     let spanId = clickedSpan.item(0).id;
     //calculate 1D --> 2D
-    var row = Math.floor(spanId / 10);
-    var col = spanId % 10;
-    console.log("2D array coordinate is: ", row, col);
+    let row = Math.floor(spanId / 10);
+    let col = spanId % 10;
     let coord = {x: row, y: col};
-    console.log(coord);
-    return coord;
+    let messageObject = {messageType: "move", PlayerID: playerID, position: coord};
+    WebSocketSession.send(JSON.stringify(messageObject));
 }
 
 function SendMove() {

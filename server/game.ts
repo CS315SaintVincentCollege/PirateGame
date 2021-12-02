@@ -131,9 +131,6 @@ export class Board {
         }
     }
 
-    /*
-    commented out will be updated and fixed in another branch
-
     useLight(playerDirection: string, player: number, playerObscuredBoard: Array<Array<string>>) {
         //Starts light one square away from player to avoid collision on current location
         let x = 1;
@@ -260,7 +257,6 @@ export class Board {
 
         return playerObscuredBoard; //return the now updated board;
     }
-    */
 }
 
 export function MakeMove(targetPosition: Position, currentBoard: Board, playerObscuredBoard: Array<Array<string>>, player: number) {

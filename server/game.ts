@@ -45,13 +45,15 @@ export class Board {
     }
 
     obscureBoard(player: number) {
-        let newBoard = this.state;
+        let newBoard = JSON.parse(JSON.stringify(this.state));
 
         if (player == 1) {
             for (let i = 0; i < this.boardSize; i++) {
                 for (let j = 0; j < this.boardSize; j++) {
                     if (newBoard[i][j] != BoardStateValues.player1) {
                         newBoard[i][j] = BoardStateValues.unknown;
+                    } else {
+                        newBoard[i][j] = BoardStateValues.player1;
                     }
                 }
             }
@@ -262,6 +264,7 @@ export class Board {
 export function MakeMove(targetPosition: Position, currentBoard: Board, playerObscuredBoard: Array<Array<string>>, player: number) {
     let newPosition = currentBoard.checkMove(targetPosition, player);
 
+    console.log(`you are ${player} moving to ${targetPosition}`);
 
     if (player == 1) {
         playerObscuredBoard[newPosition.x][newPosition.y] = BoardStateValues.player1;

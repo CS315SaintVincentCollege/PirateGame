@@ -43,15 +43,12 @@ function getMove(element){
     let clickedDiv = element;
     let clickedSpan = clickedDiv.getElementsByTagName("span");
     let spanId = clickedSpan.item(0).id;
-    let spanType = clickedSpan.item(0).className;
     //calculate 1D --> 2D
-    var row = Math.floor(spanId / 10);
-    var col = spanId % 10;
-    let coord = [row, col];
-    console.log(`player is ${playerID}`);
-    let messageObject = {messageType: "move", PlayerID: playerID, position: {x: row, y: col}};
-    WebSocketSession.send(JSON.stringify(messageObject)); //REFACTOR ME AFTER MERGE
-    console.log(messageObject);
+    let row = Math.floor(spanId / 10);
+    let col = spanId % 10;
+    let coord = {x: row, y: col};
+    let messageObject = {messageType: "move", PlayerID: playerID, position: coord};
+    WebSocketSession.send(JSON.stringify(messageObject));
 }
 
 function SendMove() {

@@ -94,6 +94,7 @@ var Board = /** @class */ (function () {
                     this.player1Pos.x = coords.x;
                     this.player1Pos.y = coords.y;
                     this.state[coords.x][coords.y] = BoardStateValues.player1;
+                    console.log(this.state);
                 }
                 else if (player == 2) {
                     this.state[this.player2Pos.x][this.player2Pos.y] = BoardStateValues.empty;
@@ -223,13 +224,19 @@ var Board = /** @class */ (function () {
 }());
 exports.Board = Board;
 function MakeMove(targetPosition, currentBoard, playerObscuredBoard, player) {
+    if (player == 1) {
+        playerObscuredBoard[currentBoard.player1Pos.x][currentBoard.player1Pos.y] = BoardStateValues.empty;
+    }
+    else if (player == 2) {
+        playerObscuredBoard[currentBoard.player2Pos.x][currentBoard.player2Pos.y] = BoardStateValues.empty;
+    }
     var newPosition = currentBoard.checkMove(targetPosition, player);
     console.log("you are " + player + " moving to " + targetPosition);
     if (player == 1) {
-        playerObscuredBoard[newPosition.x][newPosition.y] = BoardStateValues.player1;
+        playerObscuredBoard[currentBoard.player1Pos.x][currentBoard.player1Pos.y] = BoardStateValues.player1;
     }
     else if (player == 2) {
-        playerObscuredBoard[newPosition.x][newPosition.y] = BoardStateValues.player2;
+        playerObscuredBoard[currentBoard.player2Pos.x][currentBoard.player2Pos.y] = BoardStateValues.player2;
     }
     return playerObscuredBoard;
 }

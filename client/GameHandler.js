@@ -5,7 +5,7 @@ window.onload = openWSClient();
 
 function openWSClient() {
     //#region Create Connection and initalize
-    WebSocketSession = new WebSocket('ws://10.94.13.95:3002')
+    WebSocketSession = new WebSocket('ws://10.94.13.142:3002')
     WebSocketSession.onopen = (event)=>{
         WebSocketSession.send(JSON.stringify({messageType: "DEBUG", data: "Hello World"}));
     }

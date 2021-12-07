@@ -12,37 +12,35 @@ var WebServerPort = 3001;
 //#region Web Socket Setttings
 var wss = new ws_1.WebSocketServer({ port: WebSocketPort });
 var playerCount = 0;
+var game = new game_1.Board(); //master board should not be sent to client
 wss.on('connection', function connection(ws) {
     var playerID = -1;
-    var game = new game_1.Board(); //master board should not be sent to client
     var p1Board = game.obscureBoard(1);
     var p2Board = game.obscureBoard(2);
-    console.log(game.state);
-    console.log(p1Board);
     ws.on('message', function message(data) {
         // if data.messagetype = movemessage
         // MakeMove with board
-        console.log(JSON.parse(data.toString()));
+        //console.log(JSON.parse(data.toString()));
         var parsedMessageData = JSON.parse(data.toString());
+        console.log(parsedMessageData);
         switch (parsedMessageData.messageType) {
             case "move":
-                if (playerCount == 0) {
+                if (playerID == 1) {
                     // is just player 1
                     p1Board = (0, game_1.MakeMove)(parsedMessageData.position, game, p1Board, 1);
                     ws.send(JSON.stringify({ type: "BoardState", Data: p1Board }));
                 }
-                else if (playerCount == 1) {
+                else if (playerID == 2) {
                     // is just player 2
                     p2Board = (0, game_1.MakeMove)(parsedMessageData.position, game, p2Board, 2);
                     ws.send(JSON.stringify({ type: "BoardState", Data: p2Board }));
                 }
-                else if (playerCount != 0 && playerCount != 1) {
+                else {
                     // is unknown player
                     playerID = -1;
                 }
                 break;
         }
-        console.log(game.state);
     });
     console.log('player connecting');
     if (playerCount == 0) {

@@ -51,6 +51,12 @@ function getMove(element){
     WebSocketSession.send(JSON.stringify(messageObject));
 }
 
+function getLight(direction) {
+    console.log(direction);
+    let messageObject = {messageType: "light", PlayerID: playerID, Direction: direction};
+    WebSocketSession.send(JSON.stringify(messageObject));
+}
+
 function SendMove() {
     
 }

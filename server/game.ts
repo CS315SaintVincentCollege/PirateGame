@@ -126,7 +126,6 @@ export class Board {
                     this.player1Pos.x = coords.x;
                     this.player1Pos.y = coords.y;
                     this.state[coords.x][coords.y] = BoardStateValues.player1;
-                    console.log(this.state);
                 }
                 //Player 2 Sprite Moves
                 else if (player == 2) {
@@ -173,7 +172,6 @@ export class Board {
                 //treasure, opposite player sprite, and empty cells.
                 while (true) {
                     if (playerLocation.x - x < 0) {
-                        console.log("At edge of board. Cannot go North to uncover anything!");
                         break;
                     }
                     else if (this.state[playerLocation.x - x][playerLocation.y] == BoardStateValues.rock) {
@@ -202,7 +200,6 @@ export class Board {
                 //treasure, opposite player sprite, and empty cells.
                 while (true) {
                     if (playerLocation.x + x > 9) {
-                        console.log("At edge of board. Cannot go North to uncover anything!");
                         break;
                     }
                     else if (this.state[playerLocation.x + x][playerLocation.y] == BoardStateValues.rock) {
@@ -231,7 +228,6 @@ export class Board {
                 //treasure, opposite player sprite, and empty cells.
                 while (true) {
                     if (playerLocation.y + x > 9) {
-                        console.log("At edge of board. Cannot go North to uncover anything!");
                         break;
                     }
                     else if (this.state[playerLocation.x][playerLocation.y + x] == BoardStateValues.rock) {
@@ -260,27 +256,21 @@ export class Board {
                 //treasure, opposite player sprite, and empty cells.
                 while (true) {
                     if (playerLocation.y - x < 0) {
-                        console.log("At edge of board. Cannot go North to uncover anything!");
                         break;
                     }
                     else if (this.state[playerLocation.x][playerLocation.y - x] == BoardStateValues.rock) {
-                        console.log(`we hit a rock at ${x}`);
                         playerObscuredBoard[playerLocation.x][playerLocation.y - x] = BoardStateValues.rock;
                         break;
                     }
                     else if (this.state[playerLocation.x][playerLocation.y - x] == BoardStateValues.treasure) {
-                        console.log(`we hit a treasure at ${x}`);
                         playerObscuredBoard[playerLocation.x][playerLocation.y - x] = BoardStateValues.treasure;
                         break;
                     } else if (this.state[playerLocation.x][playerLocation.y - x] == BoardStateValues.player1) {
-                        console.log(`we hit a player 1 at ${x}`);
                         break;
                     } else if (this.state[playerLocation.x][playerLocation.y - x] == BoardStateValues.player2) {
-                        console.log(`we hit a player 2 at ${x}`);
                         break;
                     }
                     else {
-                        console.log(`uncovering ${playerLocation.x} ${playerLocation.y - x}`)
                         playerObscuredBoard[playerLocation.x][playerLocation.y - x] = this.state[playerLocation.x][playerLocation.y - x]; //this is the "uncovering"
                         x++;
                     }

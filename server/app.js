@@ -99,7 +99,6 @@ wss.on('connection', function connection(ws) {
         }
     });
 });
-
 //reset globals back at the end of the game and close any existing client connections
 function resetGlobals() {
     wss.clients.forEach(function (client) {
@@ -109,34 +108,34 @@ function resetGlobals() {
         game = new game_1.Board(); //master board should not be sent to client
         console.log("GAME END");
     });
-    //#endregion
-    //#region Express Server Settup
-    http.createServer(function (req, res) {
-        //default case for direct connection
-        if (req.url == '/') {
-            fs.readFile(__dirname + '/../client/' + 'index.html', function (err, data) {
-                if (err) {
-                    res.writeHead(404);
-                    res.end(JSON.stringify(err));
-                    return;
-                }
-                res.writeHead(200);
-                res.end(data);
-            });
-        }
-        else {
-            //server files within the client directory in all other cases
-            fs.readFile(__dirname + '/../client/' + req.url, function (err, data) {
-                if (err) {
-                    res.writeHead(404);
-                    res.end(JSON.stringify(err));
-                    return;
-                }
-                res.writeHead(200);
-                res.end(data);
-            });
-        }
-    }).listen(WebServerPort);
-    console.log("WebServer @ http://localhost:" + WebServerPort + " and sockets are on port " + WebSocketPort);
-    //#endregion
 }
+//#endregion
+//#region Express Server Settup
+http.createServer(function (req, res) {
+    //default case for direct connection
+    if (req.url == '/') {
+        fs.readFile(__dirname + '/../client/' + 'index.html', function (err, data) {
+            if (err) {
+                res.writeHead(404);
+                res.end(JSON.stringify(err));
+                return;
+            }
+            res.writeHead(200);
+            res.end(data);
+        });
+    }
+    else {
+        //server files within the client directory in all other cases
+        fs.readFile(__dirname + '/../client/' + req.url, function (err, data) {
+            if (err) {
+                res.writeHead(404);
+                res.end(JSON.stringify(err));
+                return;
+            }
+            res.writeHead(200);
+            res.end(data);
+        });
+    }
+}).listen(WebServerPort);
+console.log("WebServer @ http://localhost:" + WebServerPort + " and sockets are on port " + WebSocketPort);
+//#endregion

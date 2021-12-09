@@ -20,7 +20,6 @@ function openWSClient() {
     WebSocketSession.onmessage = (Message)=>{
         let messageData = JSON.parse(Message.data);
 
-        console.log(messageData.Data);
 
         switch (messageData.type) {
             case "Debug": {
@@ -29,7 +28,6 @@ function openWSClient() {
             }
             case "PlayerAssignment": {
                 playerID = messageData.Data;
-                console.log(`you are player ${playerID}`);
                 break;
             }
             case "BoardState": {
@@ -41,7 +39,7 @@ function openWSClient() {
             }
             default: {
                 console.log(`unknown message type of ${messageData.type}`);
-                console.log(Message)
+                console.log(Message);
             }
         }
     }

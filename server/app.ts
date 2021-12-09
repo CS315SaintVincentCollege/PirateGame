@@ -1,6 +1,5 @@
 console.clear();
 //clear the console
-
 //#region Globals and imports
 var fs = require('fs'),
     http = require('http');

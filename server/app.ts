@@ -115,6 +115,7 @@ function resetGlobals() {
     game = new Board(); //master board should not be sent to client
     console.log("GAME END");
   })
+}
 //#endregion
 
 
@@ -146,6 +147,3 @@ http.createServer(function (req: IncomingMessage, res: ServerResponse) {
 }).listen(WebServerPort);
 console.log(`WebServer @ http://localhost:${WebServerPort} and sockets are on port ${WebSocketPort}`);
 //#endregion
-
-
-}

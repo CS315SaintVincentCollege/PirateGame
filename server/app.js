@@ -99,6 +99,7 @@ wss.on('connection', function connection(ws) {
         }
     });
 });
+
 //reset globals back at the end of the game and close any existing client connections
 function resetGlobals() {
     wss.clients.forEach(function (client) {

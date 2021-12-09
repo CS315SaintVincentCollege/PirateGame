@@ -100,6 +100,7 @@ export class Board {
         return this.state;
     }
 
+
     //Will take in the clicked on position and player number.
     //If the move is valid, the player will either move there or not
     //move there. If they do move, the players new position is returned.
@@ -114,7 +115,9 @@ export class Board {
                 //The three above cases result in no move.
                 break;
             case BoardStateValues.treasure:
-                //End the game.
+                //With the treasure found set GameOn.foo to false to signal to app.ts that the game is over
+                GameOn.foo = false;
+                //end game
                 break;
             case BoardStateValues.empty:
                 //Player 1 Sprite Moves

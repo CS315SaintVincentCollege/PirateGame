@@ -71,7 +71,7 @@ var Board = /** @class */ (function () {
     Board.prototype.SerializeBoard = function () {
         return this.state;
     };
-    Board.prototype.checkMove = function (coords, player) {
+    Board.prototype.checkMove = function (coords, player, GameOn) {
         var returnPosition = undefined;
         switch (this.state[coords.x][coords.y]) {
             case BoardStateValues.player1:
@@ -83,6 +83,7 @@ var Board = /** @class */ (function () {
                 break;
             case BoardStateValues.treasure:
                 console.log("Treasure found");
+                GameOn.foo = false;
                 //end game
                 break;
             //case BoardStateValues.unknown:
@@ -215,25 +216,25 @@ var Board = /** @class */ (function () {
                         break;
                     }
                     else if (this.state[playerLocation.x][playerLocation.y - x] == BoardStateValues.rock) {
-                        console.log("we hit a rock at " + x);
+                        console.log("we hit a rock at ".concat(x));
                         playerObscuredBoard[playerLocation.x][playerLocation.y - x] = BoardStateValues.rock;
                         break;
                     }
                     else if (this.state[playerLocation.x][playerLocation.y - x] == BoardStateValues.treasure) {
-                        console.log("we hit a treasure at " + x);
+                        console.log("we hit a treasure at ".concat(x));
                         playerObscuredBoard[playerLocation.x][playerLocation.y - x] = BoardStateValues.treasure;
                         break;
                     }
                     else if (this.state[playerLocation.x][playerLocation.y - x] == BoardStateValues.player1) {
-                        console.log("we hit a player 1 at " + x);
+                        console.log("we hit a player 1 at ".concat(x));
                         break;
                     }
                     else if (this.state[playerLocation.x][playerLocation.y - x] == BoardStateValues.player2) {
-                        console.log("we hit a player 2 at " + x);
+                        console.log("we hit a player 2 at ".concat(x));
                         break;
                     }
                     else {
-                        console.log("uncovering " + playerLocation.x + " " + (playerLocation.y - x));
+                        console.log("uncovering ".concat(playerLocation.x, " ").concat(playerLocation.y - x));
                         playerObscuredBoard[playerLocation.x][playerLocation.y - x] = this.state[playerLocation.x][playerLocation.y - x]; //this is the "uncovering"
                         x++;
                     }
@@ -248,15 +249,15 @@ var Board = /** @class */ (function () {
     return Board;
 }());
 exports.Board = Board;
-function MakeMove(targetPosition, currentBoard, playerObscuredBoard, player) {
+function MakeMove(targetPosition, currentBoard, playerObscuredBoard, player, GameOn) {
     if (player == 1) {
         playerObscuredBoard[currentBoard.player1Pos.x][currentBoard.player1Pos.y] = BoardStateValues.empty;
     }
     else if (player == 2) {
         playerObscuredBoard[currentBoard.player2Pos.x][currentBoard.player2Pos.y] = BoardStateValues.empty;
     }
-    var newPosition = currentBoard.checkMove(targetPosition, player);
-    console.log("you are " + player + " moving to " + targetPosition);
+    var newPosition = currentBoard.checkMove(targetPosition, player, GameOn);
+    console.log("you are ".concat(player, " moving to ").concat(targetPosition));
     if (player == 1) {
         playerObscuredBoard[currentBoard.player1Pos.x][currentBoard.player1Pos.y] = BoardStateValues.player1;
     }

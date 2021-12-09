@@ -93,3 +93,20 @@ body {
 .SpriteU {
     background-image: url("./Unknown.png");
 }
+
+#Notify {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+    background-color: aqua;
+    padding: 1em;
+    font-size: 1.5em;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.ShowNotif {
+    display: block !important;
+}

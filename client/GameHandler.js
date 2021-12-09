@@ -2,6 +2,7 @@ let WebSocketSession;
 let playerID;
 
 window.onload = openWSClient();
+//on windows load open WS client to server
 
 let gameActive = false;
 
@@ -15,6 +16,7 @@ function openWSClient() {
     }
     //#endregion
     //#region Message Decider
+    //Message type from the server decides what to do with the incomming message on the websocket
     WebSocketSession.onmessage = (Message)=>{
         let messageData = JSON.parse(Message.data);
 
@@ -46,6 +48,7 @@ function openWSClient() {
     //#endregion
 }
 
+//Clicked from html in browser sends a websocket message back to the server to process move
 function getMove(element){
     if (gameActive) {
         let clickedDiv = element;
@@ -58,19 +61,23 @@ function getMove(element){
         let messageObject = {messageType: "move", PlayerID: playerID, position: coord};
         WebSocketSession.send(JSON.stringify(messageObject));
     } else {
+        //if the game hasent started dont let the player move
         Notify("Game not active wait for other player");
     }
 }
 
+//Clicked from html in browser sends a websocket message back to the server to process light shine
 function getLight(direction) {
     if (gameActive) {
         let messageObject = {messageType: "light", PlayerID: playerID, Direction: direction};
         WebSocketSession.send(JSON.stringify(messageObject));
     } else {
+        //if the game hasent started dont let the player shine a light
         Notify("No peaking");
     }
 }
 
+//when the server sends the boards state as a 2D array convert it to a 1D array and call populate divs
 function SetBoardData(BoardData) {
     
     let Board1D = [];
@@ -81,6 +88,7 @@ function SetBoardData(BoardData) {
     populateDivs(Board1D);
 }
 
+//take the 1D array of values from the server and display them in the HTML grid
 function populateDivs(output){
     let divArray = document.getElementsByClassName("Position");
     for(let i = 0; i < divArray.length; i++){
@@ -89,19 +97,24 @@ function populateDivs(output){
     }
 }
 
+//When a notify command is processed show it at the bottom of the screen for 10 seconds or until another message comes in
 function Notify(Message) {
-    clearTimeout(messageTimer);
+    clearTimeout(messageTimer); //clear previous hider of message
     if (Message == "Game can Begin") {
         EnableMoves();
     }
+
     let Popup = document.getElementById("Notify");
     Popup.classList = "ShowNotif"
     Popup.innerHTML = Message;
+    
     messageTimer = setTimeout(()=>{
-        document.getElementById("Notify").classList = ";"
+        document.getElementById("Notify").classList = "";
+        //hide message after 10 seconds
     }, 10000);
 }
 
+//message from server to begin game has started allow browser click functions to send moves to server
 function EnableMoves() {
     gameActive = true;
 }

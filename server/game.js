@@ -71,7 +71,7 @@ var Board = /** @class */ (function () {
     Board.prototype.SerializeBoard = function () {
         return this.state;
     };
-    Board.prototype.checkMove = function (coords, player) {
+    Board.prototype.checkMove = function (coords, player, GameOn) {
         var returnPosition = undefined;
         switch (this.state[coords.x][coords.y]) {
             case BoardStateValues.player1:
@@ -83,6 +83,7 @@ var Board = /** @class */ (function () {
                 break;
             case BoardStateValues.treasure:
                 console.log("Treasure found");
+                GameOn.foo = false;
                 //end game
                 break;
             //case BoardStateValues.unknown:
@@ -248,14 +249,14 @@ var Board = /** @class */ (function () {
     return Board;
 }());
 exports.Board = Board;
-function MakeMove(targetPosition, currentBoard, playerObscuredBoard, player) {
+function MakeMove(targetPosition, currentBoard, playerObscuredBoard, player, GameOn) {
     if (player == 1) {
         playerObscuredBoard[currentBoard.player1Pos.x][currentBoard.player1Pos.y] = BoardStateValues.empty;
     }
     else if (player == 2) {
         playerObscuredBoard[currentBoard.player2Pos.x][currentBoard.player2Pos.y] = BoardStateValues.empty;
     }
-    var newPosition = currentBoard.checkMove(targetPosition, player);
+    var newPosition = currentBoard.checkMove(targetPosition, player, GameOn);
     console.log("you are " + player + " moving to " + targetPosition);
     if (player == 1) {
         playerObscuredBoard[currentBoard.player1Pos.x][currentBoard.player1Pos.y] = BoardStateValues.player1;

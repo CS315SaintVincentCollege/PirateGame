@@ -5,6 +5,8 @@ window.onload = openWSClient();
 
 let gameActive = false;
 
+let messageTimer;
+
 function openWSClient() {
     //#region Create Connection and initalize
     WebSocketSession = new WebSocket('ws://10.94.6.25:3002')
@@ -88,13 +90,14 @@ function populateDivs(output){
 }
 
 function Notify(Message) {
+    clearTimeout(messageTimer);
     if (Message == "Game can Begin") {
         EnableMoves();
     }
     let Popup = document.getElementById("Notify");
     Popup.classList = "ShowNotif"
     Popup.innerHTML = Message;
-    setTimeout(()=>{
+    messageTimer = setTimeout(()=>{
         document.getElementById("Notify").classList = ";"
     }, 10000);
 }

@@ -1,0 +1,5 @@
+- [ ] Test on linux Server
+- [ ] Setup Move to Treasure Condition
+- [ ] Setup Notify Message
+- [ ] Prevent moves before player 2 has connected
+- [ ] Reset Globals after game has been won and both players have disconnected 

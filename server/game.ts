@@ -104,7 +104,7 @@ export class Board {
     //Will take in the clicked on position and player number.
     //If the move is valid, the player will either move there or not
     //move there. If they do move, the players new position is returned.
-    checkMove(coords: Position, player: number): Position {
+    checkMove(coords: Position, player: number, GameOn: any): Position {
         let returnPosition = undefined;
 
         //Look at desired move coordinates.
@@ -294,10 +294,10 @@ export class Board {
     }
 }
 
-//Takes the positon the user wants to move to, the master board, the players obscured board, and the player number and will return
+//Takes the positon the user wants to move to, the master board, the players obscured board, the player number and will return, and if the game is currently in a win condition
 //the players board with them moved (or in the case the desired position is occupied, they will remain where they are.)
 //This function gets imported into the app.ts file.
-export function MakeMove(targetPosition: Position, currentBoard: Board, playerObscuredBoard: Array<Array<string>>, player: number) {
+export function MakeMove(targetPosition: Position, currentBoard: Board, playerObscuredBoard: Array<Array<string>>, player: number, GameOn: any) {
 
     //Will empty current players location of their sprite
     if (player == 1) {
@@ -308,7 +308,7 @@ export function MakeMove(targetPosition: Position, currentBoard: Board, playerOb
 
     //Call the checkMove fucntion to see if move is valid. newPosition will be the coordinates returned from
     //the checkMove function above.
-    let newPosition = currentBoard.checkMove(targetPosition, player);
+    let newPosition = currentBoard.checkMove(targetPosition, player, GameOn);
 
     //Update sprite for each player using new coordinates to show them move.
     if (player == 1) {

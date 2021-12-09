@@ -18,6 +18,8 @@ const wss = new WebSocketServer({ port: WebSocketPort });
 
 let playerCount = 0;
 
+let GameOn = {foo: true};
+
 let game = new Board(); //master board should not be sent to client
 wss.on('connection', function connection(ws) {
   let playerID: Number = -1;
@@ -42,12 +44,26 @@ wss.on('connection', function connection(ws) {
       case "move":
         if (playerID == 1) {
           // is just player 1
-          p1Board = MakeMove(parsedMessageData.position, game, p1Board, 1);
+          p1Board = MakeMove(parsedMessageData.position, game, p1Board, 1, GameOn);
           ws.send(JSON.stringify({type: "BoardState", Data: p1Board}));
+          if (GameOn.foo == false) {
+            wss.clients.forEach((client)=> {
+              client.send(JSON.stringify({type: "Notify", Data: "Player 1 has won"}));
+              client.send(JSON.stringify({type: "BoardState", Data: game.state}));
+            });
+            resetGlobals();
+          }
         } else if (playerID == 2) {
           // is just player 2
-          p2Board = MakeMove(parsedMessageData.position, game, p2Board, 2);
+          p2Board = MakeMove(parsedMessageData.position, game, p2Board, 2, GameOn);
           ws.send(JSON.stringify({type: "BoardState", Data: p2Board}));
+          if (GameOn.foo == false) {
+            wss.clients.forEach((client)=> {
+              client.send(JSON.stringify({type: "Notify", Data: "Player 2 has won"}));
+              client.send(JSON.stringify({type: "BoardState", Data: game.state}));
+            });
+            resetGlobals();
+          }
         } else {
           // is unknown player
           playerID = -1; 
@@ -85,6 +101,7 @@ wss.on('connection', function connection(ws) {
     wss.clients.forEach((client)=> {
       client.send(JSON.stringify({type: "Notify", Data: "Game can Begin"}))
     });
+    GameOn.foo = true;
   }
 
   ws.send(JSON.stringify({type: "PlayerAssignment", Data: playerID}));
@@ -119,3 +136,14 @@ http.createServer(function (req: IncomingMessage, res: ServerResponse) {
 }).listen(WebServerPort);
 console.log(`WebServer @ http://localhost:${WebServerPort} and sockets are on port ${WebSocketPort}`);
 //#endregion
+
+
+function resetGlobals() {
+  wss.clients.forEach((client)=>{
+    client.close();
+    playerCount = 0;
+    GameOn.foo = true;
+    game = new Board(); //master board should not be sent to client
+    console.log("GAME END");
+  })
+}

@@ -87,7 +87,7 @@ export class Board {
         return this.state;
     }
 
-    checkMove(coords: Position, player: number): Position {
+    checkMove(coords: Position, player: number, GameOn: any): Position {
         let returnPosition = undefined;
         switch (this.state[coords.x][coords.y]) {
             case BoardStateValues.player1:
@@ -100,6 +100,7 @@ export class Board {
                 break;
             case BoardStateValues.treasure:
                 console.log("Treasure found");
+                GameOn.foo = false;
                 //end game
                 break;
             //case BoardStateValues.unknown:
@@ -262,7 +263,7 @@ export class Board {
     }
 }
 
-export function MakeMove(targetPosition: Position, currentBoard: Board, playerObscuredBoard: Array<Array<string>>, player: number) {
+export function MakeMove(targetPosition: Position, currentBoard: Board, playerObscuredBoard: Array<Array<string>>, player: number, GameOn: any) {
 
     if (player == 1) {
         playerObscuredBoard[currentBoard.player1Pos.x][currentBoard.player1Pos.y] = BoardStateValues.empty;
@@ -270,7 +271,7 @@ export function MakeMove(targetPosition: Position, currentBoard: Board, playerOb
         playerObscuredBoard[currentBoard.player2Pos.x][currentBoard.player2Pos.y] = BoardStateValues.empty;
     }
 
-    let newPosition = currentBoard.checkMove(targetPosition, player);
+    let newPosition = currentBoard.checkMove(targetPosition, player, GameOn);
 
     console.log(`you are ${player} moving to ${targetPosition}`);
 

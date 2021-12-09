@@ -264,7 +264,6 @@ export class Board {
 
 export function MakeMove(targetPosition: Position, currentBoard: Board, playerObscuredBoard: Array<Array<string>>, player: number) {
 
-
     if (player == 1) {
         playerObscuredBoard[currentBoard.player1Pos.x][currentBoard.player1Pos.y] = BoardStateValues.empty;
     } else if (player == 2) {

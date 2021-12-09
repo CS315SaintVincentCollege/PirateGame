@@ -3,9 +3,11 @@ let playerID;
 
 window.onload = openWSClient();
 
+let gameActive = false;
+
 function openWSClient() {
     //#region Create Connection and initalize
-    WebSocketSession = new WebSocket('ws://10.94.13.142:3002')
+    WebSocketSession = new WebSocket('ws://10.94.6.25:3002')
     WebSocketSession.onopen = (event)=>{
         WebSocketSession.send(JSON.stringify({messageType: "DEBUG", data: "Hello World"}));
     }
@@ -30,6 +32,9 @@ function openWSClient() {
                 SetBoardData(messageData.Data);
                 break;
             }
+            case "Notify": {
+                Notify(messageData.Data);
+            }
             default: {
                 console.log(`unknown message type of ${messageData.type}`);
                 console.log(Message)
@@ -40,25 +45,28 @@ function openWSClient() {
 }
 
 function getMove(element){
-    let clickedDiv = element;
-    let clickedSpan = clickedDiv.getElementsByTagName("span");
-    let spanId = clickedSpan.item(0).id;
-    //calculate 1D --> 2D
-    let row = Math.floor(spanId / 10);
-    let col = spanId % 10;
-    let coord = {x: row, y: col};
-    let messageObject = {messageType: "move", PlayerID: playerID, position: coord};
-    WebSocketSession.send(JSON.stringify(messageObject));
+    if (gameActive) {
+        let clickedDiv = element;
+        let clickedSpan = clickedDiv.getElementsByTagName("span");
+        let spanId = clickedSpan.item(0).id;
+        //calculate 1D --> 2D
+        let row = Math.floor(spanId / 10);
+        let col = spanId % 10;
+        let coord = {x: row, y: col};
+        let messageObject = {messageType: "move", PlayerID: playerID, position: coord};
+        WebSocketSession.send(JSON.stringify(messageObject));
+    } else {
+        Notify("Game not active wait for other player");
+    }
 }
 
 function getLight(direction) {
-    console.log(direction);
-    let messageObject = {messageType: "light", PlayerID: playerID, Direction: direction};
-    WebSocketSession.send(JSON.stringify(messageObject));
-}
-
-function SendMove() {
-    
+    if (gameActive) {
+        let messageObject = {messageType: "light", PlayerID: playerID, Direction: direction};
+        WebSocketSession.send(JSON.stringify(messageObject));
+    } else {
+        Notify("No peaking");
+    }
 }
 
 function SetBoardData(BoardData) {
@@ -77,4 +85,20 @@ function populateDivs(output){
         //document.getElementsByClassName("Board")[i] = array[i];
         document.getElementsByClassName("Position")[i].innerHTML = `<span id="${i}" class="BoardItem Sprite${output[i]}"></span>`;
     }
+}
+
+function Notify(Message) {
+    if (Message == "Game can Begin") {
+        EnableMoves();
+    }
+    let Popup = document.getElementById("Notify");
+    Popup.classList = "ShowNotif"
+    Popup.innerHTML = Message;
+    setTimeout(()=>{
+        document.getElementById("Notify").classList = ";"
+    }, 10000);
+}
+
+function EnableMoves() {
+    gameActive = true;
 }

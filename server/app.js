@@ -71,6 +71,9 @@ wss.on('connection', function connection(ws) {
         playerID = 2;
         playerCount++;
         ws.send(JSON.stringify({ type: "BoardState", Data: p2Board }));
+        wss.clients.forEach(function (client) {
+            client.send(JSON.stringify({ type: "Notify", Data: "Game can Begin" }));
+        });
     }
     ws.send(JSON.stringify({ type: "PlayerAssignment", Data: playerID }));
 });

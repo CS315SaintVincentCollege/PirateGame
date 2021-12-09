@@ -119,7 +119,7 @@ http.createServer(function (req, res) {
         });
     }
 }).listen(WebServerPort);
-console.log("WebServer @ http://localhost:" + WebServerPort + " and sockets are on port " + WebSocketPort);
+console.log("WebServer @ http://localhost:".concat(WebServerPort, " and sockets are on port ").concat(WebSocketPort));
 //#endregion
 function resetGlobals() {
     wss.clients.forEach(function (client) {

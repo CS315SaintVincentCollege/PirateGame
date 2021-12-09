@@ -45,13 +45,15 @@ export class Board {
     }
 
     obscureBoard(player: number) {
-        let newBoard = this.state;
+        let newBoard = JSON.parse(JSON.stringify(this.state));
 
         if (player == 1) {
             for (let i = 0; i < this.boardSize; i++) {
                 for (let j = 0; j < this.boardSize; j++) {
                     if (newBoard[i][j] != BoardStateValues.player1) {
                         newBoard[i][j] = BoardStateValues.unknown;
+                    } else {
+                        newBoard[i][j] = BoardStateValues.player1;
                     }
                 }
             }
@@ -109,6 +111,7 @@ export class Board {
                     this.player1Pos.x = coords.x;
                     this.player1Pos.y = coords.y;
                     this.state[coords.x][coords.y] = BoardStateValues.player1;
+                    console.log(this.state);
                 }
                 else if (player == 2)
                 {
@@ -130,9 +133,6 @@ export class Board {
             return { x: -1, y: -1 }; //we should never hit here if we do panic your missing your player
         }
     }
-
-    /*
-    commented out will be updated and fixed in another branch
 
     useLight(playerDirection: string, player: number, playerObscuredBoard: Array<Array<string>>) {
         //Starts light one square away from player to avoid collision on current location
@@ -260,17 +260,25 @@ export class Board {
 
         return playerObscuredBoard; //return the now updated board;
     }
-    */
 }
 
 export function MakeMove(targetPosition: Position, currentBoard: Board, playerObscuredBoard: Array<Array<string>>, player: number) {
-    let newPosition = currentBoard.checkMove(targetPosition, player);
-
+    
 
     if (player == 1) {
-        playerObscuredBoard[newPosition.x][newPosition.y] = BoardStateValues.player1;
+        playerObscuredBoard[currentBoard.player1Pos.x][currentBoard.player1Pos.y] = BoardStateValues.empty;
     } else if (player == 2) {
-        playerObscuredBoard[newPosition.x][newPosition.y] = BoardStateValues.player2;
+        playerObscuredBoard[currentBoard.player2Pos.x][currentBoard.player2Pos.y] = BoardStateValues.empty;
+    }
+
+    let newPosition = currentBoard.checkMove(targetPosition, player);
+
+    console.log(`you are ${player} moving to ${targetPosition}`);
+
+    if (player == 1) {
+        playerObscuredBoard[currentBoard.player1Pos.x][currentBoard.player1Pos.y] = BoardStateValues.player1;
+    } else if (player == 2) {
+        playerObscuredBoard[currentBoard.player2Pos.x][currentBoard.player2Pos.y] = BoardStateValues.player2;
     }
 
     return playerObscuredBoard;

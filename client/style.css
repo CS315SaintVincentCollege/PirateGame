@@ -58,3 +58,7 @@ body {
 .SpriteR {
     background-image: url("./Obstacle.png");
 }
+
+.SpriteU {
+    background-image: url("./Unknown.png");
+}

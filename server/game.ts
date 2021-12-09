@@ -35,7 +35,7 @@ export class Board {
             }
         }
 
-        this.state[Math.floor(Math.random() * 10)][Math.floor(Math.random() * 10)] = BoardStateValues.treasure;
+        this.state[Math.floor(Math.random() * 8) + 1][Math.floor(Math.random() * 8) + 1] = BoardStateValues.treasure;
 
         this.state[0][this.boardSize - 1] = BoardStateValues.player1;
         this.state[this.boardSize - 1][0] = BoardStateValues.player2;
@@ -96,7 +96,7 @@ export class Board {
                 console.log("Square is occupied.");
                 //window.alert("Square is occupied. Cannot make move");
                 //send space ocupied message
-    
+
                 break;
             case BoardStateValues.treasure:
                 console.log("Treasure found");
@@ -106,15 +106,14 @@ export class Board {
             case BoardStateValues.empty:
                 console.log("Square is free. Move to square");
                 //move player sprite
-                if(player == 1){
+                if (player == 1) {
                     this.state[this.player1Pos.x][this.player1Pos.y] = BoardStateValues.empty;
                     this.player1Pos.x = coords.x;
                     this.player1Pos.y = coords.y;
                     this.state[coords.x][coords.y] = BoardStateValues.player1;
                     console.log(this.state);
                 }
-                else if (player == 2)
-                {
+                else if (player == 2) {
                     this.state[this.player2Pos.x][this.player2Pos.y] = BoardStateValues.empty;
                     this.player2Pos.x = coords.x;
                     this.player2Pos.y = coords.y;
@@ -137,7 +136,7 @@ export class Board {
     useLight(playerDirection: string, player: number, playerObscuredBoard: Array<Array<string>>) {
         //Starts light one square away from player to avoid collision on current location
         let x = 1;
-        let playerLocation: Position = {x: -1, y: -1};
+        let playerLocation: Position = { x: -1, y: -1 };
 
         if (player == 1) {
             playerLocation = this.player1Pos;
@@ -148,25 +147,27 @@ export class Board {
         switch (playerDirection) {
             case "N":
                 //case for board edge
-                if(playerLocation.x - x < 0){
-                    console.log("At edge of board. Cannot go North to uncover anything!");
-                    break;
-                }
 
-                while (!(playerLocation.x - x < 0) || this.state[playerLocation.x - x][playerLocation.y] != BoardStateValues.player1 || this.state[playerLocation.x - x][playerLocation.y] != BoardStateValues.player2 || this.state[playerLocation.x - x][playerLocation.y] != BoardStateValues.rock) {
+                while (true) {
                     //mutate the player obscured board based on the information located in this.state
-                    if(this.state[playerLocation.x - x][playerLocation.y] == BoardStateValues.rock)
-                    {
+                    if (playerLocation.x - x < 0) {
+                        console.log("At edge of board. Cannot go North to uncover anything!");
+                        break;
+                    }
+                    else if (this.state[playerLocation.x - x][playerLocation.y] == BoardStateValues.rock) {
                         playerObscuredBoard[playerLocation.x - x][playerLocation.y] = BoardStateValues.rock;
                         break;
                     }
-                    else if(this.state[playerLocation.x - x][playerLocation.y] == BoardStateValues.treasure)
-                    {
+                    else if (this.state[playerLocation.x - x][playerLocation.y] == BoardStateValues.treasure) {
                         playerObscuredBoard[playerLocation.x - x][playerLocation.y] = BoardStateValues.treasure;
                         break;
+                    } else if (this.state[playerLocation.x - x][playerLocation.y] == BoardStateValues.player1) {
+
+                        break;
+                    } else if (this.state[playerLocation.x - x][playerLocation.y] == BoardStateValues.player2) {
+                        break;
                     }
-                    else
-                    {
+                    else {
                         playerObscuredBoard[playerLocation.x - x][playerLocation.y] = this.state[playerLocation.x - x][playerLocation.y]; //this is the "uncovering"
                         x++;
                     }
@@ -174,96 +175,95 @@ export class Board {
 
                 break;
             case "S":
-                //case for board edge
-                if(playerLocation.x + x > 9){
-                    console.log("At edge of board. Cannot go South to uncover anything!");
-                    break;
-                }
-
-                while (!(playerLocation.y > 9) || this.state[playerLocation.x + x][playerLocation.y] != BoardStateValues.player1 || this.state[playerLocation.x + x][playerLocation.y] != BoardStateValues.player2 || this.state[playerLocation.x + x][playerLocation.y] != BoardStateValues.rock) {
-                    //mutate the player obscured board based on the information located in this.state
-                    if(this.state[playerLocation.x + x][playerLocation.y] == BoardStateValues.rock)
-                    {
+                while (true) {
+                    //case for board edge
+                    if (playerLocation.x + x > 9) {
+                        console.log("At edge of board. Cannot go North to uncover anything!");
+                        break;
+                    }
+                    else if (this.state[playerLocation.x + x][playerLocation.y] == BoardStateValues.rock) {
                         playerObscuredBoard[playerLocation.x + x][playerLocation.y] = BoardStateValues.rock;
                         break;
                     }
-                    else if(this.state[playerLocation.x + x][playerLocation.y] == BoardStateValues.treasure)
-                    {
+                    else if (this.state[playerLocation.x + x][playerLocation.y] == BoardStateValues.treasure) {
                         playerObscuredBoard[playerLocation.x + x][playerLocation.y] = BoardStateValues.treasure;
                         break;
+                    } else if (this.state[playerLocation.x + x][playerLocation.y] == BoardStateValues.player1) {
+
+                        break;
+                    } else if (this.state[playerLocation.x + x][playerLocation.y] == BoardStateValues.player2) {
+                        break;
                     }
-                    else
-                    {
+                    else {
                         playerObscuredBoard[playerLocation.x + x][playerLocation.y] = this.state[playerLocation.x + x][playerLocation.y]; //this is the "uncovering"
                         x++;
                     }
                 }
-
                 break;
             case "E":
-                //case for board edge
-                if(playerLocation.y + x > 9){
-                    console.log("At edge of board. Cannot go East to uncover anything!");
-                    break;
-                }
-
-                while (!(playerLocation.y + x > 9) || this.state[playerLocation.x][playerLocation.y + x] != BoardStateValues.player1 || this.state[playerLocation.x][playerLocation.y + x] != BoardStateValues.player2 || this.state[playerLocation.x][playerLocation.y + x] != BoardStateValues.rock) {
-                    //mutate the player obscured board based on the information located in this.state
-                    if(this.state[playerLocation.x][playerLocation.y + x] == BoardStateValues.rock)
-                    {
+                while (true) {
+                    if (playerLocation.y + x > 9) {
+                        console.log("At edge of board. Cannot go North to uncover anything!");
+                        break;
+                    }
+                    else if (this.state[playerLocation.x][playerLocation.y + x] == BoardStateValues.rock) {
                         playerObscuredBoard[playerLocation.x][playerLocation.y + x] = BoardStateValues.rock;
                         break;
                     }
-                    else if(this.state[playerLocation.x][playerLocation.y + x] == BoardStateValues.treasure)
-                    {
+                    else if (this.state[playerLocation.x][playerLocation.y + x] == BoardStateValues.treasure) {
                         playerObscuredBoard[playerLocation.x][playerLocation.y + x] = BoardStateValues.treasure;
                         break;
+                    } else if (this.state[playerLocation.x][playerLocation.y + x] == BoardStateValues.player1) {
+
+                        break;
+                    } else if (this.state[playerLocation.x][playerLocation.y + x] == BoardStateValues.player2) {
+                        break;
                     }
-                    else
-                    {
+                    else {
                         playerObscuredBoard[playerLocation.x][playerLocation.y + x] = this.state[playerLocation.x][playerLocation.y + x]; //this is the "uncovering"
                         x++;
                     }
                 }
-                
                 break;
             case "W":
-                //case for board edge
-                if(playerLocation.y - x < 0){
-                    console.log("At edge of board. Cannot go West to uncover anything!");
-                    break;
-                }
-
-                while (!(playerLocation.y < 0) || this.state[playerLocation.x][playerLocation.y - x] != BoardStateValues.player1 || this.state[playerLocation.x][playerLocation.y - x] != BoardStateValues.player2 || this.state[playerLocation.x][playerLocation.y - x] != BoardStateValues.rock) {
-                    //mutate the player obscured board based on the information located in this.state
-                    if(this.state[playerLocation.x][playerLocation.y - x] == BoardStateValues.rock)
-                    {
+                while (true) {
+                    if (playerLocation.y - x < 0) {
+                        console.log("At edge of board. Cannot go North to uncover anything!");
+                        break;
+                    }
+                    else if (this.state[playerLocation.x][playerLocation.y - x] == BoardStateValues.rock) {
+                        console.log(`we hit a rock at ${x}`);
                         playerObscuredBoard[playerLocation.x][playerLocation.y - x] = BoardStateValues.rock;
                         break;
                     }
-                    else if(this.state[playerLocation.x][playerLocation.y - x] == BoardStateValues.treasure)
-                    {
+                    else if (this.state[playerLocation.x][playerLocation.y - x] == BoardStateValues.treasure) {
+                        console.log(`we hit a treasure at ${x}`);
                         playerObscuredBoard[playerLocation.x][playerLocation.y - x] = BoardStateValues.treasure;
                         break;
+                    } else if (this.state[playerLocation.x][playerLocation.y - x] == BoardStateValues.player1) {
+                        console.log(`we hit a player 1 at ${x}`);
+                        break;
+                    } else if (this.state[playerLocation.x][playerLocation.y - x] == BoardStateValues.player2) {
+                        console.log(`we hit a player 2 at ${x}`);
+                        break;
                     }
-                    else
-                    {
+                    else {
+                        console.log(`uncovering ${playerLocation.x} ${playerLocation.y - x}`)
                         playerObscuredBoard[playerLocation.x][playerLocation.y - x] = this.state[playerLocation.x][playerLocation.y - x]; //this is the "uncovering"
                         x++;
                     }
                 }
-
                 break;
             default:
                 console.log("Something terribly went wrong");
         }
-
+        console.log(this.state);
         return playerObscuredBoard; //return the now updated board;
     }
 }
 
 export function MakeMove(targetPosition: Position, currentBoard: Board, playerObscuredBoard: Array<Array<string>>, player: number) {
-    
+
 
     if (player == 1) {
         playerObscuredBoard[currentBoard.player1Pos.x][currentBoard.player1Pos.y] = BoardStateValues.empty;
@@ -286,6 +286,6 @@ export function MakeMove(targetPosition: Position, currentBoard: Board, playerOb
 
 export function playerUseLight(targetDirection: string, currentBoard: Board, playerObscuredBoard: Array<Array<string>>, player: number) {
     playerObscuredBoard = currentBoard.useLight(targetDirection, player, playerObscuredBoard);
-    
+
     return playerObscuredBoard;
 }

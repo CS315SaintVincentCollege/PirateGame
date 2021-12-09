@@ -40,6 +40,21 @@ wss.on('connection', function connection(ws) {
                     playerID = -1;
                 }
                 break;
+            case "light":
+                if (playerID == 1) {
+                    // is just player 1
+                    p1Board = (0, game_1.playerUseLight)(parsedMessageData.Direction, game, p1Board, 1);
+                    ws.send(JSON.stringify({ type: "BoardState", Data: p1Board }));
+                }
+                else if (playerID == 2) {
+                    // is just player 2
+                    p2Board = (0, game_1.playerUseLight)(parsedMessageData.Direction, game, p2Board, 2);
+                    ws.send(JSON.stringify({ type: "BoardState", Data: p2Board }));
+                }
+                else {
+                    // is unknown player
+                    playerID = -1;
+                }
         }
     });
     console.log('player connecting');

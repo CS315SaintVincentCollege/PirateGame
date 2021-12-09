@@ -39,7 +39,38 @@ body {
     width: 100%;
 }
 
-.SpriteE {
+.Controller {
+    position: absolute;
+    top: 2em;
+    left: 2em;
+    display: grid;
+    width: 10em;
+    height: 10em;
+    grid-template: 1fr 1fr 1fr / 1fr 1fr 1fr;
+    grid-template-areas: ". North ." "West . East" ". South .";
+}
+
+.Button {
+    font-size: 2em;
+}
+
+.NorthButton {
+    grid-area: North;
+}
+
+.EastButton {
+    grid-area: East;
+    transform: rotate(90deg);
+}
+
+.SouthButton {
+    grid-area: South;
+    transform: rotate(180deg);
+}
+
+.WestButton {
+    grid-area: West;
+    transform: rotate(270deg);
 }
 
 .SpriteT {
